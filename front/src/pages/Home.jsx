@@ -1,12 +1,22 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
+import homeLogo from "../image/homeLogo.png"
+import homeLogo2 from "../image/homeLogo2.png"
+import homehaikei from "../image/homehaikei.jpg"
+import Homestyle from "../Home.css"
 
 const Home = () => {
     return (
-        <div className="Home"> 
-            <h1>VSCT</h1>
-            <Link to="/" style={{ textDecoration: "none" }}><div className="link">Play</div></Link>
-        </div>
+        <html>
+        <body background={homehaikei} >
+            
+            <div className="Home"> 
+                <h1><img src={homeLogo} width="600" height="250"/></h1>
+                <Link to="/lobby" ><div className="link"><img src={homeLogo2}width="200" height="100"/></div></Link>
+            </div>
+        </body>
+        <link rel="stylesheet" href={Homestyle}></link>
+        </html>
     );
 }
-
 export default Home
