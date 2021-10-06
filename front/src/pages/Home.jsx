@@ -15,6 +15,10 @@ const Home = () => {
                 <Link to="/lobby" ><div className="link"><img src={homeLogo2}width="200" height="100"/></div></Link>
             </div>
         </body>
+<<<<<<< Updated upstream
+=======
+        
+>>>>>>> Stashed changes
         <link rel="stylesheet" href={Homestyle}></link>
         </html>
     );
