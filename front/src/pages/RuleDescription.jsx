@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 import Rule from "../image/Rule.png"
 import RuleLobby from "../image/RuleLobby.png"
 import Homestyle from "../RuleDescription.css"
@@ -18,7 +19,7 @@ const RuleDescription = () => {
             <h2>MATCH</h2>
                 <p>〇シングルプレイかマルチプレイか選択する。</p>
                 <p>〇ロビー画面下でユーザー名が設定できるよ</p>
-            <h4><img  src={RuleLobby} width="300" height="100" align="left"/></h4>
+                <Link to="/lobby" ><div className="link"><img  src={RuleLobby} width="300" height="100" align="left"/></div></Link>
 
         </div>
         
