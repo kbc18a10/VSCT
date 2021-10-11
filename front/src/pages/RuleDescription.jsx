@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom'
 import Rule from "../image/Rule.png"
 import RuleLobby from "../image/RuleLobby.png"
 import Homestyle from "../RuleDescription.css"
+import Rulepic from "../image/Rulepic.png"
+
 
 
 const RuleDescription = () => {
@@ -10,6 +12,7 @@ const RuleDescription = () => {
         <html>
         <div className="RuleDescription"> 
             <h1><img src={Rule} width="400" height="150"/></h1>
+            <img src={Rulepic} width="300" height="300" align="right"/>
             <h2>GAME</h2>
                 <p>〇タイルの無い場所をクリックします。</p>
                 <p> クリックした場所から上下左右でそれぞれ一番近いタイルの中に、同じ色の組み合わせがあればスコアが加算されます。</p>
@@ -19,10 +22,12 @@ const RuleDescription = () => {
             <h2>MATCH</h2>
                 <p>〇シングルプレイかマルチプレイか選択する。</p>
                 <p>〇ロビー画面下でユーザー名が設定できるよ</p>
-                <Link to="/lobby" ><div className="link"><img  src={RuleLobby} width="300" height="100" align="left"/></div></Link>
+                
+                
 
         </div>
-        
+
+        <Link to="/lobby" ><div className="link"><img  src={RuleLobby} width="300" height="100" align="left"/></div></Link>
         <link rel="stylesheet" href={Homestyle} ></link>
         </html>
     );
