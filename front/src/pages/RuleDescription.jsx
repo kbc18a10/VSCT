@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom'
 import Rule from "../image/Rule.png"
 import RuleLobby from "../image/RuleLobby.png"
-import Homestyle from "../RuleDescription.css"
+import Rulestyle from "../RuleDescription.css"
 import Rulepic from "../image/Rulepic.png"
 
 
@@ -10,7 +10,7 @@ import Rulepic from "../image/Rulepic.png"
 const RuleDescription = () => {
     return (
         <html>
-        <div className="RuleDescription"> 
+        <div className="RuleDescription" > 
             <h1><img src={Rule} width="400" height="150"/></h1>
             <img src={Rulepic} width="300" height="300" align="right"/>
             <h2>GAME</h2>
@@ -22,13 +22,9 @@ const RuleDescription = () => {
             <h2>MATCH</h2>
                 <p>〇シングルプレイかマルチプレイか選択する。</p>
                 <p>〇ロビー画面下でユーザー名が設定できるよ</p>
-                
-                
-
+                <Link to="/lobby" ><img  src={RuleLobby} width="300" height="100" align="left"/></Link>
         </div>
-
-        <Link to="/lobby" ><div className="link"><img  src={RuleLobby} width="300" height="100" align="left"/></div></Link>
-        <link rel="stylesheet" href={Homestyle} ></link>
+        <link rel="stylesheet" href={Rulestyle} ></link>
         </html>
     );
 }
