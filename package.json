@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.2.0"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node back/app.js",
+    "start": "node back/index.js",
     "heroku-postbuild": "cd front && npm install && npm run build"
   },
   "repository": {
@@ -18,8 +23,5 @@
   "bugs": {
     "url": "https://github.com/kbc18a10/vsct/issues"
   },
-  "homepage": "https://github.com/kbc18a10/vsct#readme",
-  "dependencies": {
-    "express": "^4.17.1"
-  }
+  "homepage": "https://github.com/kbc18a10/vsct#readme"
 }
