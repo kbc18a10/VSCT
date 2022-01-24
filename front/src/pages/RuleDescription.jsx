@@ -1,31 +1,36 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
-import Rule from "../image/Rule.png"
-import RuleLobby from "../image/RuleLobby.png"
-import Rulestyle from "../RuleDescription.css"
-import Rulepic from "../image/Rulepic.png"
+import { Button } from "@material-ui/core";
+import { makeStyles } from '@material-ui/core/styles';
+import {Link} from 'react-router-dom';
+import img_ruleToLobby from '../images/RuleDescription/RuleLobby.png';
+import '../css/RuleDescription.css'
 
+const useStyles = makeStyles({
+    button: {
+        position:"absolute",
+	    left:'230px',
+	    bottom:'20px'
+    }
+  });
+  
+const RuleDescription = ({onChangeState}) => {
+    const classes = useStyles();
 
+    const handleChangeState = () => {
+        onChangeState("lobby");
+    }
 
-const RuleDescription = () => {
     return (
-        <html>
-        <div className="RuleDescription" > 
-            <h1><img src={Rule} width="400" height="150"/></h1>
-            <img src={Rulepic} width="300" height="300" align="right"/>
-            <h2>GAME</h2>
-                <p>〇タイルの無い場所をクリックします。</p>
-                <p> クリックした場所から上下左右でそれぞれ一番近いタイルの中に、同じ色の組み合わせがあればスコアが加算されます。</p>
-                <p>〇同じ色の組み合わせの無いところをクリックした場合－５点</p>
-                <p>〇1つのタイルが1点</p>
-                <p>〇動物タイルは5点</p>
-            <h2>MATCH</h2>
-                <p>〇シングルプレイかマルチプレイか選択する。</p>
-                <p>〇ロビー画面下でユーザー名が設定できるよ</p>
-                <Link to="/lobby" ><img  src={RuleLobby} width="300" height="100" align="left"/></Link>
+        <div className="RuleDescription"> 
+            <Button
+                className={classes.button}
+                component={Link}
+                to="/lobby"
+                onClick={handleChangeState}
+            >
+                <img className="ruleToLobby" src={img_ruleToLobby}></img>
+            </Button>
         </div>
-        <link rel="stylesheet" href={Rulestyle} ></link>
-        </html>
     );
 }
 

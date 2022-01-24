@@ -1,11 +1,11 @@
-body{
+div.Home{
+    background-image: url("../images/Home/homehaikei2.jpg");
     background-position:center;
-    background-size:cover;
     background-repeat: no-repeat;
     min-height: 100vh;
 }
 
-h1{
+div#homelogo{
    margin-top: 0px;
    padding-top: 100px;
 }
