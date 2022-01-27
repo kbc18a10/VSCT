@@ -1,6 +1,6 @@
-import tileimg1 from '../images/tile1.png';
-import tileimg2 from '../images/tile2.png';
-import tileimg3 from '../images/tile3.png';
+import tileimg1 from '../images/Game/tile1.png';
+import tileimg2 from '../images/Game/tile2.png';
+import tileimg3 from '../images/Game/tile3.png';
 import { makeStyles } from '@material-ui/core/styles';
 import {Button} from '@material-ui/core';
 import React,{useState} from 'react';
