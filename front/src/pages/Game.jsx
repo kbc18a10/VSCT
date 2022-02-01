@@ -106,11 +106,48 @@ const Game = React.memo(({leavePlayer, players, onChangeState,state,name, onTile
                     }
                 } 
                 setPlayerInfo(array);
+
+                const container = document.getElementsByClassName('container')[0];
+                const circle = document.getElementsByClassName('circle')[0];
+                const count = document.getElementsByClassName('count')[0];
+                const count0 = document.getElementsByClassName('count0')[0];
+
+                 // 新しいHTML要素を作成
+                var new_element3 = document.createElement('p');
+                new_element3.textContent = '3';
+                var new_element2 = document.createElement('p');
+                new_element2.textContent = '2';
+                var new_element1 = document.createElement('p');
+                new_element1.textContent = '1';
+
+                // 指定した要素の中の末尾に挿入
+                count.appendChild(new_element3);
+                count.appendChild(new_element2);
+                count.appendChild(new_element1);
+
+                count0.textContent = '0';
+
+                container.setAttribute("id", "container");
+                circle.setAttribute("id", "circle");
+                count.setAttribute("id", "count");
+                count0.setAttribute("id", "count0");
+
+                count0.addEventListener('animationend', () => {
+                    // アニメーション終了後に実行する内容
+                      count.innerHTML = '';
+                      count0.innerHTML = '';
+                      container.setAttribute("id", "");
+                      circle.setAttribute("id", "");
+                      count.setAttribute("id", "");
+                      count0.setAttribute("id", "");
+                      setIsStartFlg(true);
+                    })
+
                 // var militime;
-                setTimeout(()=>{
-                    // console.log(new Date(res.headers.date).getTime());
-                    setIsStartFlg(true);                    
-                },3000);
+                // setTimeout(()=>{
+                //     // console.log(new Date(res.headers.date).getTime());
+                //     setIsStartFlg(true);                    
+                // },3000);
                 // axios.head(window.location.href).then(res => {
                     // var start = new Date(res.headers.date).getTime() + 3000;
                     // console.log(start);
@@ -167,11 +204,6 @@ const Game = React.memo(({leavePlayer, players, onChangeState,state,name, onTile
                 var id2 = "ready" + i;
                 array.push(<div className="playerGameSocre" id={id}><span id="playername">{players[keys[i]]["name"]}</span><span id="score">&nbsp;Score:{players[keys[i]]["score"]}</span></div>)
                 var readyClass = "";
-                console.log(classes.plus0);
-                console.log(classes.check0);
-                console.log(classes.check1);
-                console.log(classes.check2);
-                console.log(classes.check3);
                 if(players[keys[i]]['ready']){
                     if(i == 0){
                         readyClass = classes.check0;
@@ -224,6 +256,8 @@ const Game = React.memo(({leavePlayer, players, onChangeState,state,name, onTile
         }
     }
 
+    
+
     return (
         <div className="Game"> 
             {flg&&<Redirect to="/result" />}
@@ -232,26 +266,32 @@ const Game = React.memo(({leavePlayer, players, onChangeState,state,name, onTile
                 {isStartFlg ? <Time gameEnd={(flg)=>handleGameEnd(flg)}/>:<div className="time"></div>}
                 {playerScores[1]?playerScores[1]:<div className='playerGameSocre'/>}
             </div>
+            <div className="container">
+                <div className="circle"></div>
+                <div className="count"></div>
+                <div className="count0"></div>
+            </div>
             {!isStartFlg &&
                 <div className='ReadyState'>
                     {playerIsReady}
                 </div>
-                }
+            }
             <div className="tileTable">
-                
+
                 {isStartFlg ? <TileTable className={classes.TileTable} onTileClick={(id) => handleTileClick(id)} table={table.table}/>
-                :
-                <div className='dummytileTable'> 
-                    {!isStartFlg &&
-                        <div>
-                            <Button
-                                className={isReady?classes.readyButton:classes.notReadyButton}
-                                onClick={handleClickReady}>
-                                    Ready?
-                            </Button>
-                        </div>
-                    }
-                </div>}
+                    :
+                    <div className='dummytileTable'> 
+                        {!isStartFlg &&
+                            <div>
+                                <Button
+                                    className={isReady?classes.readyButton:classes.notReadyButton}
+                                    onClick={handleClickReady}>
+                                        Ready?
+                                </Button>
+                            </div>
+                        }
+                    </div>
+                }
             </div>
             <div className='bottomContext'>
                 {playerScores[2]?playerScores[2]:<div className='playerGameSocre'/>}
