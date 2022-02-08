@@ -5,8 +5,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Redirect} from 'react-router-dom';
 import TileTable from '../components/TileTable';
 import Time from '../components/Time';
-// import axios from 'axios';
 import '../css/Game.css';
+import useSound from 'use-sound';
+import Sound from '../audio/button.mp3';
+import Success from '../audio/success.mp3';
+import Miss from '../audio/miss.mp3';
+import Finish from '../audio/finish.mp3';
 import plus0 from '../images/Game/plus0.png';
 import plus1 from '../images/Game/plus1.png';
 import plus2 from '../images/Game/plus2.png';
@@ -22,12 +26,7 @@ const useStyles = makeStyles({
         backgroundColor:'primary'
     },
     notReadyButton:{
-        // backgroundColor:'red',
         color: 'red',
-        // '&:hover':{
-        //     // backgroundColor: 'red'
-        //     color: 'green'
-        // },
         fontSize:'44px',
         border: 'solid 2px #57464c',
         width:'184px',
@@ -38,12 +37,7 @@ const useStyles = makeStyles({
         margin: 'auto'
     },
     readyButton:{
-        // backgroundColor:'green',
         color: 'green',
-        // '&:hover':{
-        //     // backgroundColor: 'green'
-        //     color: 'red'
-        // }, 
         fontSize:'44px',
         border: 'solid 2px #57464c',
         width:'184px',
@@ -83,25 +77,36 @@ const useStyles = makeStyles({
 });
   
 
-const Game = React.memo(({leavePlayer, players, onChangeState,state,name, onTileClick, onButtonReady, table, onPlayerScores}) => {
+const Game = React.memo(({leavePlayer, players, myself, onChangeState,state,name, onTileClick, onButtonReady, table, onPlayerScores}) => {
     const classes = useStyles();
     const [isReady,setIsReady] = useState(false);
     const [flg, setFlg] = useState(false);
-    // const [init,isInit] = useState(false);
     const [isStartFlg, setIsStartFlg] = useState(false);
     const [playerInfo, setPlayerInfo] = useState();
     const [playerScores, setPlayerScores] = useState(new Array(4));
     const [playerIsReady, setPlayerIsReady] = useState(new Array(4));
     const [leavePlayers, setLeavePlayers] = useState([]);
+    const [readyList, setReadyList] = useState({});
+    const [playButton1] = useSound(Sound, {volume:1});
+    const [playButton2] = useSound(Sound, {volume:0.3});
+    const [playSuccess1] = useSound(Success, {volume:1});
+    const [playSuccess2] = useSound(Success, {volume:0.3});
+    const [playMiss1] = useSound(Miss, {volume:1});
+    const [playMiss2] = useSound(Miss, {volume:0.3});
+    const [finish] = useSound(Finish, {volume:1});
+
+    useEffect(()=>{
+        console.log(players);
+    },[])
 
     useEffectDebugger(()=>{
         if(table.startTime>0){
             if(!isStartFlg){
                 var array = [];
                 var id = 0;
-                for(var key in players){
+                for(var key in players['players']){
                     if(key != "isGameStart"){
-                        array.push({name:players[key]["name"],score:players[key]["score"],id:id});
+                        array.push({name:players['players'][key]["name"],score:players['players'][key]["score"],id:id});
                         id++;
                     }
                 } 
@@ -134,33 +139,14 @@ const Game = React.memo(({leavePlayer, players, onChangeState,state,name, onTile
 
                 count0.addEventListener('animationend', () => {
                     // アニメーション終了後に実行する内容
-                      count.innerHTML = '';
-                      count0.innerHTML = '';
-                      container.setAttribute("id", "");
-                      circle.setAttribute("id", "");
-                      count.setAttribute("id", "");
-                      count0.setAttribute("id", "");
-                      setIsStartFlg(true);
-                    })
-
-                // var militime;
-                // setTimeout(()=>{
-                //     // console.log(new Date(res.headers.date).getTime());
-                //     setIsStartFlg(true);                    
-                // },3000);
-                // axios.head(window.location.href).then(res => {
-                    // var start = new Date(res.headers.date).getTime() + 3000;
-                    // console.log(start);
-                    // var now = new Date().getTime();
-                    // console.log(now);
-                    // militime = start-now;
-                    // console.log(militime);
-                    // setTimeout(()=>{
-                    //     console.log(new Date(res.headers.date).getTime());
-                    //     setIsStartFlg(true);                    
-                    // },3000);
-                // })
-                
+                    count.innerHTML = '';
+                    count0.innerHTML = '';
+                    container.setAttribute("id", "");
+                    circle.setAttribute("id", "");
+                    count.setAttribute("id", "");
+                    count0.setAttribute("id", "");
+                    setIsStartFlg(true);
+                })
             }
         }
     },[table])
@@ -175,13 +161,13 @@ const Game = React.memo(({leavePlayer, players, onChangeState,state,name, onTile
     },[leavePlayer])
 
     useEffectDebugger(()=>{
-        if(table.startTime == 0){
+        if(0 <= table.startTime){
             var w_playerInfo = playerInfo;
-            for(var key1 in players){
-                var pname = players[key1]["name"];
+            for(var key1 in players['players']){
+                var pname = players['players'][key1]["name"];
                 for(var key2 in playerInfo){
                     if(playerInfo[key2]["name"]==pname){
-                        w_playerInfo[key2]["score"] = players[key1]["score"];
+                        w_playerInfo[key2]["score"] = players['players'][key1]["score"];
                     };
                 }
             } 
@@ -189,22 +175,39 @@ const Game = React.memo(({leavePlayer, players, onChangeState,state,name, onTile
                 var id = "player" + i;
                 return <div className={'playerGameSocre'} id={id}><span id="playername">{p["name"]}</span><span id="score">&nbsp;Score:{p["score"]}</span></div>
             })
+            console.log(players['click_player']);
+            if(players['click_player']['socketID'] == myself["socketID"]){
+                if(players['click_player']['judge'] == 1){
+                    playSuccess1();
+                }else if(players['click_player']['judge'] == -1){
+                    playMiss1();
+                }
+            }else{
+                if(players['click_player']['judge'] == 1){
+                    playSuccess2();
+                }else if(players['click_player']['judge'] == -1){
+                    playMiss2();
+                }
+            }
             setPlayerInfo(w_playerInfo);
             setPlayerScores(array);
         }else{
             var array = [];
             var array2 = [];
-            var keys = Object.keys(players);
+            var array3 = {};
+            var keys = Object.keys(players['players']);
             if(0<=keys.indexOf('isGameStart')){
                 keys.splice(keys.indexOf('isGameStart'),1)
             }
             for(var i = 0; i < keys.length;i++){
-                console.log(players[keys[i]]);
+                console.log(myself);
+                console.log(players['players'][keys[i]]);
                 var id = "player" + i;
                 var id2 = "ready" + i;
-                array.push(<div className="playerGameSocre" id={id}><span id="playername">{players[keys[i]]["name"]}</span><span id="score">&nbsp;Score:{players[keys[i]]["score"]}</span></div>)
+                array.push(<div className="playerGameSocre" id={id}><span id="playername">{players['players'][keys[i]]["name"]}</span><span id="score">&nbsp;Score:{players['players'][keys[i]]["score"]}</span></div>)
                 var readyClass = "";
-                if(players[keys[i]]['ready']){
+                
+                if(players['players'][keys[i]]['ready']){
                     if(i == 0){
                         readyClass = classes.check0;
                     }else if(i == 1){
@@ -225,10 +228,26 @@ const Game = React.memo(({leavePlayer, players, onChangeState,state,name, onTile
                         readyClass = classes.plus3;
                     }
                 }
+                var socketID = players['players'][keys[i]]['socketID'];
+                array3[socketID] = players['players'][keys[i]]['ready']
                 array2.push(<span className={readyClass} id={id2}></span>)
             }
+            console.log(myself["socketID"]);
+            for(var listID in readyList){
+                for(var id in array3){
+                    if(listID == id && readyList[listID] != array3[id]){
+                        if(myself["socketID"] == listID){
+                            playButton1();
+                        }else{
+                            playButton2();
+                        }
+                    }
+                }
+            }
+
             setPlayerScores(array);
             setPlayerIsReady(array2);
+            setReadyList(array3);
         }
     },[players])
  
@@ -238,10 +257,10 @@ const Game = React.memo(({leavePlayer, players, onChangeState,state,name, onTile
 
     const handleClickReady = () => {
         if(isReady){
-            setIsReady(false)
+            setIsReady(false);
             onButtonReady(false);
         }else{
-            setIsReady(true)
+            setIsReady(true);
             onButtonReady(true);
         }
     }
@@ -253,10 +272,9 @@ const Game = React.memo(({leavePlayer, players, onChangeState,state,name, onTile
                 console.log(info);
             })
             onPlayerScores(playerInfo)
+            finish();
         }
     }
-
-    
 
     return (
         <div className="Game"> 
@@ -285,7 +303,8 @@ const Game = React.memo(({leavePlayer, players, onChangeState,state,name, onTile
                             <div>
                                 <Button
                                     className={isReady?classes.readyButton:classes.notReadyButton}
-                                    onClick={handleClickReady}>
+                                    onClick={handleClickReady}
+                                    disabled={table.startTime>0}>
                                         Ready?
                                 </Button>
                             </div>
