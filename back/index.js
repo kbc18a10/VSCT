@@ -71,7 +71,7 @@ io.on('connection', (socket) => {
           score:0
         }
 
-        io.to(socket.id).emit('get_players', singlePlayer);
+        io.to(socket.id).emit('get_players', singlePlayer,{socketID:socket.id,judge:0});
         console.log('emit get_myself');
         io.to(socket.id).emit('get_myself', singlePlayer);
       }else{
@@ -102,7 +102,7 @@ io.on('connection', (socket) => {
           score:0
         }
         //waitPlayers.push(room+":"+socket.id);
-        io.to(room).emit('get_players', multiPlayers[room]);
+        io.to(room).emit('get_players', multiPlayers[room],{socketID:socket.id,judge:0});
         console.log('emit get_myself');
         io.to(socket.id).emit('get_myself', multiPlayers[room][socket.id]);
       }
@@ -113,7 +113,7 @@ io.on('connection', (socket) => {
       if(isSingle){
         singlePlayer[socket.id].ready = data.isReady;
         console.log("emit get_players");
-        io.to(socket.id).emit('get_players',singlePlayer);
+        io.to(socket.id).emit('get_players',singlePlayer,{socketID:socket.id,judge:0});
         console.log('emit get_myself');
         io.to(socket.id).emit('get_myself', singlePlayer);
         var shuffleArray = array.arrayShuffle(tileArray)
@@ -130,7 +130,7 @@ io.on('connection', (socket) => {
     function multiSetReady(){
       multiPlayers[room][socket.id].ready =  multiPlayers[room][socket.id].ready?false:true;
       console.log("emit get_players");
-      io.to(room).emit('get_players', multiPlayers[room]);
+      io.to(room).emit('get_players', multiPlayers[room],{socketID:socket.id,judge:0});
       console.log('emit get_myself');
       io.to(socket.id).emit('get_myself', multiPlayers[room][socket.id]);
       //var deleteWaitPlayers = [];
@@ -212,13 +212,13 @@ io.on('connection', (socket) => {
         multiSetReady();
         io.to(room).emit('player_leave',{name:multiPlayers[room][socket.id]["name"],score:multiPlayers[room][socket.id]["score"]});
         delete multiPlayers[room][socket.id];
+        io.to(room).emit('get_players', multiPlayers[room],{socketID:socket.id,judge:0});
         if(Object.keys(multiPlayers[room]).length == 1){
           delete multiPlayers[room];
           delete multiTileTables[room];
         }
         //waitPlayers = waitPlayers.filter(wp => (room +":" + socket.id) != wp);
         //reRoom();
-        io.to(room).emit('get_players', multiPlayers[room]);
       }
     })
 
