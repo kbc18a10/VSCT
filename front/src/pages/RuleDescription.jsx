@@ -10,7 +10,7 @@ import '../css/RuleDescription.css'
 const useStyles = makeStyles({
     button: {
         position:"absolute",
-	    left:'230px',
+	    left:'516px',
 	    bottom:'20px'
     }
   });
