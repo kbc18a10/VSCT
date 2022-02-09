@@ -95,12 +95,9 @@ const Game = React.memo(({leavePlayer, players, myself, onChangeState,state,name
     const [playMiss2] = useSound(Miss, {volume:0.3});
     const [finish] = useSound(Finish, {volume:1});
 
-    useEffect(()=>{
-        console.log(players);
-    },[])
-
     useEffectDebugger(()=>{
-        if(table.startTime>0){
+        console.log(table.startTime);
+        if(0<table.startTime){
             if(!isStartFlg){
                 var array = [];
                 var id = 0;
@@ -110,7 +107,6 @@ const Game = React.memo(({leavePlayer, players, myself, onChangeState,state,name
                         id++;
                     }
                 } 
-                setPlayerInfo(array);
 
                 const container = document.getElementsByClassName('container')[0];
                 const circle = document.getElementsByClassName('circle')[0];
@@ -146,13 +142,14 @@ const Game = React.memo(({leavePlayer, players, myself, onChangeState,state,name
                     count.setAttribute("id", "");
                     count0.setAttribute("id", "");
                     setIsStartFlg(true);
+                    setPlayerInfo(array);
                 })
             }
         }
     },[table])
 
     useEffectDebugger(()=>{
-        if(table.startTime == 0){
+        if(0 <= table.startTime){
             var array = leavePlayers;
             array.push(leavePlayer);
             console.log(array);
@@ -161,8 +158,11 @@ const Game = React.memo(({leavePlayer, players, myself, onChangeState,state,name
     },[leavePlayer])
 
     useEffectDebugger(()=>{
-        if(0 <= table.startTime){
+        console.log(table.startTime);
+        if(isStartFlg){
             var w_playerInfo = playerInfo;
+            console.log(playerInfo);
+            console.log(leavePlayers);
             for(var key1 in players['players']){
                 var pname = players['players'][key1]["name"];
                 for(var key2 in playerInfo){
@@ -175,7 +175,6 @@ const Game = React.memo(({leavePlayer, players, myself, onChangeState,state,name
                 var id = "player" + i;
                 return <div className={'playerGameSocre'} id={id}><span id="playername">{p["name"]}</span><span id="score">&nbsp;Score:{p["score"]}</span></div>
             })
-            console.log(players['click_player']);
             if(players['click_player']['socketID'] == myself["socketID"]){
                 if(players['click_player']['judge'] == 1){
                     playSuccess1();
@@ -200,7 +199,6 @@ const Game = React.memo(({leavePlayer, players, myself, onChangeState,state,name
                 keys.splice(keys.indexOf('isGameStart'),1)
             }
             for(var i = 0; i < keys.length;i++){
-                console.log(myself);
                 console.log(players['players'][keys[i]]);
                 var id = "player" + i;
                 var id2 = "ready" + i;

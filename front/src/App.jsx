@@ -79,6 +79,7 @@ const App = React.memo(() => {
 
   const handleLeavePlayer = (player) => {
     setLeavePlayer(player);
+    console.log(player);
   }
 
   const handlePlayerScores = (playerScores) => {

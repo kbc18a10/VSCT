@@ -15,7 +15,6 @@ const SocketCommunication = ({name, isSingle, clickedTileID, isReady, onChangeTi
    
     socketRef.current.on('get_players',(players,click_player) => {
         console.log('get_players');
-        console.log(click_player);
         changePlayers({players:players,click_player:click_player})
     })
 
